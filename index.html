@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap');
-        :root { --accent: #00f5d4; --ethio-gold: #f5cb5c; }
+        :root { --accent: #f5cb5c; --ethio-gold: #f5cb5c; }
         
         body { 
             background-color: #050505; 
@@ -18,6 +18,15 @@
             margin: 0;
             scroll-behavior: smooth;
         }
+
+        /* PREMIUM LOADING SCREEN */
+        #loader {
+            position: fixed; inset: 0; background: #000; z-index: 10000;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+        .loader-text { font-size: 10px; letter-spacing: 5px; color: var(--accent); margin-top: 20px; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
         
         #cursor { 
             width: 20px; height: 20px; 
@@ -40,36 +49,20 @@
             z-index: 1; 
         }
         
-        /* FULLSCREEN VIDEO AT THE TOP */
         .video-container {
-            width: 100%;
-            height: 100vh;
-            background: #000;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 100%; height: 100vh; background: #000;
+            position: relative; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
         }
 
         .video-container iframe {
-            width: 100vw;
-            height: 56.25vw; /* 16:9 Aspect Ratio */
-            min-height: 100vh;
-            min-width: 177.77vh; /* 16:9 Aspect Ratio */
-            pointer-events: none;
-            position: absolute;
+            width: 100vw; height: 56.25vw; min-height: 100vh; min-width: 177.77vh;
+            pointer-events: none; position: absolute;
         }
 
-        /* SCROLL DOWN INDICATOR */
         .scroll-hint {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            animation: bounce 2s infinite;
-            color: var(--accent);
-            z-index: 10;
+            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+            animation: bounce 2s infinite; color: var(--accent); z-index: 10;
         }
 
         @keyframes bounce {
@@ -81,10 +74,7 @@
         .creative-text-container { perspective: 1000px; height: 120px; display: flex; align-items: center; justify-content: center; }
         
         .dynamic-text { 
-            font-weight: 800; 
-            text-transform: uppercase; 
-            letter-spacing: -2px; 
-            display: inline-block; 
+            font-weight: 800; text-transform: uppercase; letter-spacing: -2px; display: inline-block; 
             animation: textMaster 8s infinite ease-in-out; 
             transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
         }
@@ -93,62 +83,50 @@
             0%, 100% { transform: rotateX(0deg) scale(1); color: white; }
             20% { transform: rotateY(180deg) scale(1.1); color: var(--accent); }
             40% { transform: rotateX(90deg) scale(0.9); color: var(--ethio-gold); }
-            60% { transform: rotateZ(10deg) scale(1.3); color: #ff0055; }
+            60% { transform: rotateZ(10deg) scale(1.3); color: #f5cb5c; }
             80% { transform: rotateY(-180deg) scale(1); color: #0088ff; }
         }
 
         .glass-card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); transition: 0.4s; }
-        .glass-card:hover { border-color: var(--accent); transform: translateY(-10px); background: rgba(0, 245, 212, 0.05); }
+        .glass-card:hover { border-color: var(--accent); transform: translateY(-10px); background: rgba(245, 203, 92, 0.05); }
 
         .hero-text-section {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            z-index: 10;
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            position: relative; z-index: 10;
             background: linear-gradient(to bottom, #000, #050505);
         }
 
-        /* Video styling for Vault */
         .vault-video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: grayscale(100%);
-            transition: filter 0.7s ease;
+            width: 100%; height: 100%; object-fit: cover;
+            filter: grayscale(100%); transition: filter 0.7s ease;
         }
-        .group:hover .vault-video {
-            filter: grayscale(0%);
-        }
+        .group:hover .vault-video { filter: grayscale(0%); }
     </style>
 </head>
 <body class="overflow-x-hidden">
+
+    <div id="loader">
+        <div class="text-3xl font-bold tracking-tighter uppercase">BEKA<span class="text-[#f5cb5c]">CHALI</span></div>
+        <div class="loader-text">INITIALIZING CINEMATIC EXPERIENCE</div>
+    </div>
 
     <div id="cursor"></div>
     <div class="ethio-pattern-bg"></div>
 
     <nav class="fixed w-full z-50 px-8 py-6 flex justify-between items-center mix-blend-difference">
-        <div class="text-2xl font-bold tracking-tighter uppercase">BEKA<span class="text-[#00f5d4]">CHALI</span></div>
+        <div class="text-2xl font-bold tracking-tighter uppercase">BEKA<span class="text-[#f5cb5c]">CHALI</span></div>
         <div class="hidden md:flex gap-10 text-xs uppercase tracking-[0.2em] font-medium">
-            <a href="#work" class="hover:text-[#00f5d4] transition">Vault</a>
-            <a href="#channels" class="hover:text-[#00f5d4] transition">Channels</a>
-            <a href="#about" class="hover:text-[#00f5d4] transition">About</a>
-            <a href="#contact" class="hover:text-[#00f5d4] transition">Contact</a>
+            <a href="#work" class="hover:text-[#f5cb5c] transition">Vault</a>
+            <a href="#channels" class="hover:text-[#f5cb5c] transition">Channels</a>
+            <a href="#about" class="hover:text-[#f5cb5c] transition">About</a>
+            <a href="#contact" class="hover:text-[#f5cb5c] transition">Contact</a>
         </div>
     </nav>
 
-    <!-- 1. VIDEO AT THE VERY TOP -->
     <section class="video-container">
-        <!-- 
-           Updated ID to 3r4sQ0mVeCc as per your screenshot. 
-           Note: If testing locally, YouTube might block this unless using a local server.
-        -->
         <iframe 
             src="https://www.youtube.com/embed/3r4sQ0mVeCc?autoplay=1&mute=1&loop=1&playlist=3r4sQ0mVeCc&controls=0&modestbranding=1&rel=0&iv_load_policy=3&enablejsapi=1" 
-            frameborder="0" 
-            allow="autoplay; encrypted-media; picture-in-picture" 
-            allowfullscreen>
+            frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen>
         </iframe>
         
         <div class="scroll-hint">
@@ -157,7 +135,6 @@
         </div>
     </section>
 
-    <!-- 2. HERO TEXT CONTENT (Seen upon scroll) -->
     <section class="hero-text-section px-6">
         <div class="text-center max-w-5xl mx-auto">
             <h1 class="text-[clamp(3.5rem,12vw,7rem)] leading-[0.85] font-bold tracking-tighter mb-6 uppercase">
@@ -173,154 +150,130 @@
             </p>
             
             <div class="flex flex-col md:flex-row gap-8 justify-center items-center">
-                <a href="#work" class="px-12 py-5 bg-[#00f5d4] text-black font-bold rounded-full hover:scale-110 transition uppercase tracking-widest text-sm shadow-[0_0_30px_rgba(0,245,212,0.3)]">View Vault</a>
-                <a href="#contact" class="text-sm tracking-[0.3em] border-b border-white/30 pb-1 hover:border-[#00f5d4] transition uppercase font-medium">Contact Me</a>
+                <a href="#work" class="px-12 py-5 bg-[#f5cb5c] text-black font-bold rounded-full hover:scale-110 transition uppercase tracking-widest text-sm shadow-[0_0_30px_rgba(245,203,92,0.3)]">View Vault</a>
+                <a href="#contact" class="text-sm tracking-[0.3em] border-b border-white/30 pb-1 hover:border-[#f5cb5c] transition uppercase font-medium">Contact Me</a>
             </div>
         </div>
     </section>
 
-    <!-- 3. PRODUCTION VAULT -->
     <section id="work" class="relative py-32 px-6 max-w-7xl mx-auto z-10">
-        <h2 class="text-5xl font-bold mb-16 border-l-4 border-[#00f5d4] pl-6 uppercase tracking-tighter">Production Vault</h2>
+        <h2 class="text-5xl font-bold mb-16 border-l-4 border-[#f5cb5c] pl-6 uppercase tracking-tighter">Production Vault</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            
-            <!-- Vault Slot 01 -->
-            <div class="glass-card rounded-2xl overflow-hidden group">
+            <div class="glass-card rounded-2xl overflow-hidden group cursor-pointer">
                 <div class="relative aspect-video bg-zinc-900">
-                    <video class="vault-video" loop muted playsinline>
-                        <source src="vault_1.mp4" type="video/mp4">
-                    </video>
+                    <video class="vault-video" loop muted playsinline><source src="vault_1.mp4" type="video/mp4"></video>
                     <div class="absolute inset-0 bg-black/40 opacity-40 group-hover:opacity-0 transition pointer-events-none"></div>
                 </div>
                 <div class="p-6">
-                    <span class="text-[10px] text-[#00f5d4] tracking-widest uppercase">YouTube Content</span>
-                    <h3 class="text-xl font-bold mt-2 uppercase">Movie Recap Expert</h3>
+                    <span class="text-[10px] text-[#f5cb5c] tracking-widest uppercase">Event Advertisement</span>
+                    <h3 class="text-xl font-bold mt-2 uppercase">Animation and Motion Graphics</h3>
                 </div>
             </div>
-
-            <!-- Vault Slot 02 -->
-            <div class="glass-card rounded-2xl overflow-hidden group">
+            <div class="glass-card rounded-2xl overflow-hidden group cursor-pointer">
                 <div class="relative aspect-video bg-zinc-900">
-                    <video class="vault-video" loop muted playsinline>
-                        <source src="vault_2.mp4" type="video/mp4">
-                    </video>
-                    <div class="absolute inset-0 bg-black/40 opacity-40 group-hover:opacity-0 transition pointer-events-none"></div>
+                    <video class="vault-video" loop muted playsinline><source src="vault_2.mp4" type="video/mp4"></video>
                 </div>
                 <div class="p-6">
-                    <span class="text-[10px] text-[#00f5d4] tracking-widest uppercase">AI Production</span>
-                    <h3 class="text-xl font-bold mt-2 uppercase">AI Visual Specialist</h3>
+                    <span class="text-[10px] text-[#f5cb5c] tracking-widest uppercase">Company Ad</span>
+                    <h3 class="text-xl font-bold mt-2 uppercase">Google Ads Campaign</h3>
                 </div>
             </div>
-
-            <!-- Vault Slot 03 -->
-            <div class="glass-card rounded-2xl overflow-hidden group">
+            <div class="glass-card rounded-2xl overflow-hidden group cursor-pointer">
                 <div class="relative aspect-video bg-zinc-900">
-                    <video class="vault-video" loop muted playsinline>
-                        <source src="vault_3.mp4" type="video/mp4">
-                    </video>
-                    <div class="absolute inset-0 bg-black/40 opacity-40 group-hover:opacity-0 transition pointer-events-none"></div>
+                    <video class="vault-video" loop muted playsinline><source src="vault_3.mp4" type="video/mp4"></video>
                 </div>
-                <div class="p-6">
-                    <span class="text-[10px] text-[#00f5d4] tracking-widest uppercase">Commercials</span>
-                    <h3 class="text-xl font-bold mt-2 uppercase">Brand Storytelling</h3>
-                </div>
+                <div class="p-6"><span class="text-[10px] text-[#f5cb5c] tracking-widest uppercase">Daily Stories</span><h3 class="text-xl font-bold mt-2 uppercase">Viral Retention Expert</h3></div>
             </div>
-
-            <!-- Vault Slot 04 -->
-            <div class="glass-card rounded-2xl overflow-hidden group">
+            <div class="glass-card rounded-2xl overflow-hidden group cursor-pointer">
                 <div class="relative aspect-video bg-zinc-900">
-                    <video class="vault-video" loop muted playsinline>
-                        <source src="vault_4.mp4" type="video/mp4">
-                    </video>
-                    <div class="absolute inset-0 bg-black/40 opacity-40 group-hover:opacity-0 transition pointer-events-none"></div>
+                    <video class="vault-video" loop muted playsinline><source src="vault_4.mp4" type="video/mp4"></video>
                 </div>
-                <div class="p-6">
-                    <span class="text-[10px] text-[#00f5d4] tracking-widest uppercase">Motion Graphics</span>
-                    <h3 class="text-xl font-bold mt-2 uppercase">Visual Identity</h3>
-                </div>
+                <div class="p-6"><span class="text-[10px] text-[#f5cb5c] tracking-widest uppercase">Logo Animation</span><h3 class="text-xl font-bold mt-2 uppercase">Company Social Media</h3></div>
             </div>
-
-            <!-- Vault Slot 05 -->
-            <div class="glass-card rounded-2xl overflow-hidden group">
+            <div class="glass-card rounded-2xl overflow-hidden group cursor-pointer">
                 <div class="relative aspect-video bg-zinc-900">
-                    <video class="vault-video" loop muted playsinline>
-                        <source src="vault_5.mp4" type="video/mp4">
-                    </video>
-                    <div class="absolute inset-0 bg-black/40 opacity-40 group-hover:opacity-0 transition pointer-events-none"></div>
+                    <video class="vault-video" loop muted playsinline><source src="vault_5.mp4" type="video/mp4"></video>
                 </div>
-                <div class="p-6">
-                    <span class="text-[10px] text-[#00f5d4] tracking-widest uppercase">Cinematic Edits</span>
-                    <h3 class="text-xl font-bold mt-2 uppercase">Color Grading Master</h3>
-                </div>
+                <div class="p-6"><span class="text-[10px] text-[#f5cb5c] tracking-widest uppercase">Motion Graphics</span><h3 class="text-xl font-bold mt-2 uppercase">Mobile App Ads</h3></div>
             </div>
-
-            <!-- Vault Slot 06 -->
-            <div class="glass-card rounded-2xl overflow-hidden group">
+            <div class="glass-card rounded-2xl overflow-hidden group cursor-pointer">
                 <div class="relative aspect-video bg-zinc-900">
-                    <video class="vault-video" loop muted playsinline>
-                        <source src="vault_6.mp4" type="video/mp4">
-                    </video>
-                    <div class="absolute inset-0 bg-black/40 opacity-40 group-hover:opacity-0 transition pointer-events-none"></div>
+                    <video class="vault-video" loop muted playsinline><source src="vault_6.mp4" type="video/mp4"></video>
                 </div>
-                <div class="p-6">
-                    <span class="text-[10px] text-[#00f5d4] tracking-widest uppercase">Social Media</span>
-                    <h3 class="text-xl font-bold mt-2 uppercase">Viral Retention Expert</h3>
-                </div>
+                <div class="p-6"><span class="text-[10px] text-[#f5cb5c] tracking-widest uppercase">Company Services</span><h3 class="text-xl font-bold mt-2 uppercase">Explainer Videos</h3></div>
             </div>
         </div>
     </section>
 
-    <!-- 4. YOUTUBE CHANNELS -->
     <section id="channels" class="py-20 bg-zinc-900/30 px-6">
         <div class="max-w-7xl mx-auto">
             <h2 class="text-3xl font-bold mb-12 uppercase tracking-widest text-center">YouTube Channels</h2>
             <div class="grid grid-cols-2 md:grid-cols-5 gap-6">
-                <a href="#" target="_blank" class="group relative aspect-square rounded-full overflow-hidden border border-white/10 hover:border-[#00f5d4] transition duration-500">
+                <a href="https://youtu.be/3r4sQ0mVeCc" target="_blank" class="group relative aspect-square rounded-full overflow-hidden border border-white/10 hover:border-[#f5cb5c] transition duration-500">
                     <div class="w-full h-full bg-zinc-800 flex items-center justify-center">
+                        <img src="yt_1.jpg" class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-100 transition duration-500" onerror="this.style.display='none'">
                         <i class="fa-brands fa-youtube text-3xl opacity-50 group-hover:opacity-100 group-hover:text-red-600 transition"></i>
                     </div>
                 </a>
-                <a href="https://www.youtube.com/@MysteryoftheGospel-v4b" target="_blank" class="group relative aspect-square rounded-full overflow-hidden border border-white/10 hover:border-[#00f5d4] transition"><div class="w-full h-full bg-zinc-800 flex items-center justify-center"><i class="fa-brands fa-youtube text-3xl opacity-50"></i></div></a>
-                <a href="https://youtu.be/k8tyNyypA8s" target="_blank" class="group relative aspect-square rounded-full overflow-hidden border border-white/10 hover:border-[#00f5d4] transition"><div class="w-full h-full bg-zinc-800 flex items-center justify-center"><i class="fa-brands fa-youtube text-3xl opacity-50"></i></div></a>
-                <a href="https://youtu.be/MeARAi1CwLk" target="_blank" class="group relative aspect-square rounded-full overflow-hidden border border-white/10 hover:border-[#00f5d4] transition"><div class="w-full h-full bg-zinc-800 flex items-center justify-center"><i class="fa-brands fa-youtube text-3xl opacity-50"></i></div></a>
-                <a href="https://youtu.be/BTyv69FRx_w" target="_blank" class="group relative aspect-square rounded-full overflow-hidden border border-white/10 hover:border-[#00f5d4] transition"><div class="w-full h-full bg-zinc-800 flex items-center justify-center"><i class="fa-brands fa-youtube text-3xl opacity-50"></i></div></a>
+                <a href="https://www.youtube.com/@MysteryoftheGospel-v4b" target="_blank" class="group relative aspect-square rounded-full overflow-hidden border border-white/10 hover:border-[#f5cb5c] transition duration-500">
+                    <div class="w-full h-full bg-zinc-800 flex items-center justify-center">
+                        <img src="yt_2.jpg" class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-100 transition duration-500" onerror="this.style.display='none'">
+                        <i class="fa-brands fa-youtube text-3xl opacity-50 group-hover:opacity-100 group-hover:text-red-600 transition"></i>
+                    </div>
+                </a>
+                <a href="https://youtu.be/k8tyNyypA8s" target="_blank" class="group relative aspect-square rounded-full overflow-hidden border border-white/10 hover:border-[#f5cb5c] transition duration-500">
+                    <div class="w-full h-full bg-zinc-800 flex items-center justify-center">
+                        <img src="yt_3.jpg" class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-100 transition duration-500" onerror="this.style.display='none'">
+                        <i class="fa-brands fa-youtube text-3xl opacity-50 group-hover:opacity-100 group-hover:text-red-600 transition"></i>
+                    </div>
+                </a>
+                <a href="https://youtu.be/MeARAi1CwLk" target="_blank" class="group relative aspect-square rounded-full overflow-hidden border border-white/10 hover:border-[#f5cb5c] transition duration-500">
+                    <div class="w-full h-full bg-zinc-800 flex items-center justify-center">
+                        <img src="yt_4.jpg" class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-100 transition duration-500" onerror="this.style.display='none'">
+                        <i class="fa-brands fa-youtube text-3xl opacity-50 group-hover:opacity-100 group-hover:text-red-600 transition"></i>
+                    </div>
+                </a>
+                <a href="https://youtu.be/BTyv69FRx_w" target="_blank" class="group relative aspect-square rounded-full overflow-hidden border border-white/10 hover:border-[#f5cb5c] transition duration-500">
+                    <div class="w-full h-full bg-zinc-800 flex items-center justify-center">
+                        <img src="yt_5.jpg" class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-100 transition duration-500" onerror="this.style.display='none'">
+                        <i class="fa-brands fa-youtube text-3xl opacity-50 group-hover:opacity-100 group-hover:text-red-600 transition"></i>
+                    </div>
+                </a>
             </div>
         </div>
     </section>
 
-    <!-- 5. ABOUT -->
     <section id="about" class="py-32 px-6 max-w-7xl mx-auto grid md:grid-cols-2 gap-20 items-center">
         <div>
             <h2 class="text-5xl font-bold mb-8 uppercase tracking-tighter">Beka Debela Chali</h2>
             <p class="text-zinc-400 text-lg leading-relaxed mb-6">Creative mind with a knack for detail and resilience in solving complex editing challenges. Experienced Lead Video Editor focused on branding and production standards.</p>
             <div class="flex gap-4">
-                <span class="px-4 py-2 bg-white/5 rounded-full text-[10px] uppercase font-bold text-[#00f5d4]">Adobe Premiere</span>
-                <span class="px-4 py-2 bg-white/5 rounded-full text-[10px] uppercase font-bold text-[#00f5d4]">Digital Literacy</span>
+                <span class="px-4 py-2 bg-white/5 rounded-full text-[10px] uppercase font-bold text-[#f5cb5c]">Adobe Premiere</span>
+                <span class="px-4 py-2 bg-white/5 rounded-full text-[10px] uppercase font-bold text-[#f5cb5c]">Digital Literacy</span>
             </div>
         </div>
         <div class="flex items-center justify-center">
             <div class="relative w-64 h-64 md:w-80 md:h-80 flex items-center justify-center">
-                <div class="absolute inset-0 border border-white/10 rounded-full animate-[spin_20s_linear_infinite]"><div class="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-[#00f5d4] rounded-full shadow-[0_0_15px_#00f5d4]"></div></div>
+                <div class="absolute inset-0 border border-white/10 rounded-full animate-[spin_20s_linear_infinite]"><div class="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-[#f5cb5c] rounded-full shadow-[0_0_15px_#f5cb5c]"></div></div>
                 <div class="w-4/5 h-4/5 rounded-full overflow-hidden border border-white/5 flex items-center justify-center"><img src="ethio-pattern-bg.png" class="w-full h-full object-cover opacity-30 filter invert grayscale"></div>
             </div>
         </div>
     </section>
 
-    <!-- 6. CONTACT -->
     <section id="contact" class="py-32 px-6 max-w-4xl mx-auto">
         <div class="glass-card p-12 rounded-[3rem] text-center">
             <h2 class="text-5xl font-bold mb-6 uppercase tracking-tighter">Let's Create a Stunning Video</h2>
             <p class="text-zinc-400 mb-12 text-lg">Ready to grow your YouTube channel or create high-impact AI ads? Reach out to me directly.</p>
             <div class="flex flex-col gap-8 items-center justify-center">
-                <a href="tel:+251929104303" class="group flex items-center gap-4 text-2xl font-bold hover:text-[#00f5d4] transition duration-300">
-                    <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[#00f5d4]/20"><i class="fa-solid fa-phone text-sm"></i></div>
+                <a href="tel:+251934497929" class="group flex items-center gap-4 text-2xl font-bold hover:text-[#f5cb5c] transition duration-300">
+                    <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[#f5cb5c]/20"><i class="fa-solid fa-phone text-sm"></i></div>
                     +251 934 49 79 29
                 </a>
-                <a href="mailto:bekachali527@gmail.com" class="group flex items-center gap-4 text-2xl font-bold hover:text-[#00f5d4] transition duration-300">
-                    <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[#00f5d4]/20"><i class="fa-solid fa-envelope text-sm"></i></div>
+                <a href="mailto:bekachali527@gmail.com" class="group flex items-center gap-4 text-2xl font-bold hover:text-[#f5cb5c] transition duration-300">
+                    <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[#f5cb5c]/20"><i class="fa-solid fa-envelope text-sm"></i></div>
                     Email Me Directly
                 </a>
-                <a href="https://www.linkedin.com/in/bekachali" target="_blank" class="px-10 py-4 bg-white text-black font-bold rounded-full hover:bg-[#00f5d4] transition duration-500 uppercase tracking-widest flex items-center gap-3">
+                <a href="https://www.linkedin.com/in/bekachali" target="_blank" class="px-10 py-4 bg-white text-black font-bold rounded-full hover:bg-[#f5cb5c] transition duration-500 uppercase tracking-widest flex items-center gap-3">
                     <i class="fa-brands fa-linkedin text-xl"></i> LinkedIn Profile
                 </a>
             </div>
@@ -330,6 +283,15 @@
     <footer class="py-20 text-center border-t border-white/5 uppercase text-[10px] tracking-[0.2em]"><p class="text-zinc-600">© 2026 BEKA CHALI | ADDIS ABABA STORYTELLER.</p></footer>
 
     <script>
+        // Remove Loader
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                setTimeout(() => { loader.style.visibility = 'hidden'; }, 800);
+            }, 1000);
+        });
+
         const cursor = document.getElementById('cursor');
         document.addEventListener('mousemove', e => { 
             cursor.style.left = e.clientX + 'px'; 
@@ -349,7 +311,6 @@
             }, 500); 
         }, 3000);
 
-        // Hover effect for cursor
         document.querySelectorAll('a, button, .glass-card').forEach(link => { 
             link.addEventListener('mouseenter', () => { 
                 cursor.style.transform = 'scale(4)'; 
@@ -361,7 +322,6 @@
             }); 
         });
 
-        // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => { 
             anchor.addEventListener('click', function (e) { 
                 e.preventDefault(); 
@@ -369,22 +329,14 @@
             }); 
         });
 
-        // Play/Pause local videos in Vault on hover with proper promise handling
         document.querySelectorAll('.group').forEach(group => {
             const video = group.querySelector('.vault-video');
             if (video) {
                 group.addEventListener('mouseenter', () => {
                     const playPromise = video.play();
-                    if (playPromise !== undefined) {
-                        playPromise.catch(() => {
-                            /* Silence "interrupted by pause" or "autoplay blocked" errors */
-                        });
-                    }
+                    if (playPromise !== undefined) { playPromise.catch(() => {}); }
                 });
-                group.addEventListener('mouseleave', () => {
-                    video.pause();
-                    video.currentTime = 0;
-                });
+                group.addEventListener('mouseleave', () => { video.pause(); video.currentTime = 0; });
             }
         });
     </script>
