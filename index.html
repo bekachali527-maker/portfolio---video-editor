@@ -44,7 +44,7 @@
             background-size: cover; 
             background-position: center; 
             background-repeat: no-repeat;
-            opacity: 0.05; 
+            opacity: 0.03; /* Lowered opacity so it doesn't interfere with video quality */
             pointer-events: none; 
             z-index: 1; 
         }
@@ -55,9 +55,47 @@
             display: flex; align-items: center; justify-content: center;
         }
 
-        .video-container iframe {
-            width: 100vw; height: 56.25vw; min-height: 100vh; min-width: 177.77vh;
-            pointer-events: none; position: absolute;
+        /* Improved Video Scaling & Quality */
+        .video-wrapper {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+        }
+        .video-wrapper iframe {
+            width: 100vw; 
+            height: 56.25vw; /* 16:9 ratio */
+            min-height: 100vh; 
+            min-width: 177.77vh; 
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Audio Toggle Button (Bottom Left) */
+        #mute-toggle {
+            position: absolute;
+            bottom: 40px;
+            left: 40px;
+            z-index: 100;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+        #mute-toggle:hover {
+            background: var(--accent);
+            color: black;
+            transform: scale(1.15);
+            border-color: var(--accent);
         }
 
         .scroll-hint {
@@ -124,10 +162,17 @@
     </nav>
 
     <section class="video-container">
-        <iframe 
-            src="https://www.youtube.com/embed/3r4sQ0mVeCc?autoplay=1&mute=1&loop=1&playlist=3r4sQ0mVeCc&controls=0&modestbranding=1&rel=0&iv_load_policy=3&enablejsapi=1" 
-            frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen>
-        </iframe>
+        <div class="video-wrapper">
+            <iframe 
+                id="hero-video"
+                src="https://www.youtube.com/embed/3r4sQ0mVeCc?enablejsapi=1&autoplay=1&mute=1&loop=1&playlist=3r4sQ0mVeCc&controls=0&modestbranding=1&rel=0&iv_load_policy=3&vq=hd1080" 
+                frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen>
+            </iframe>
+        </div>
+
+        <button id="mute-toggle">
+            <i id="mute-icon" class="fa-solid fa-volume-xmark text-lg"></i>
+        </button>
         
         <div class="scroll-hint">
             <p class="text-[10px] tracking-[0.4em] uppercase mb-2">Scroll to explore</p>
@@ -267,7 +312,7 @@
             <div class="flex flex-col gap-8 items-center justify-center">
                 <a href="tel:+251934497929" class="group flex items-center gap-4 text-2xl font-bold hover:text-[#f5cb5c] transition duration-300">
                     <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[#f5cb5c]/20"><i class="fa-solid fa-phone text-sm"></i></div>
-                    +251 934 49 79 29
+                    +251 929 10 43 03
                 </a>
                 <a href="mailto:bekachali527@gmail.com" class="group flex items-center gap-4 text-2xl font-bold hover:text-[#f5cb5c] transition duration-300">
                     <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[#f5cb5c]/20"><i class="fa-solid fa-envelope text-sm"></i></div>
@@ -283,6 +328,37 @@
     <footer class="py-20 text-center border-t border-white/5 uppercase text-[10px] tracking-[0.2em]"><p class="text-zinc-600">© 2026 BEKA CHALI | ADDIS ABABA STORYTELLER.</p></footer>
 
     <script>
+        // YouTube API Mute/Unmute Logic
+        var player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('hero-video', {
+                events: {
+                    'onReady': onPlayerReady
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            const muteBtn = document.getElementById('mute-toggle');
+            const muteIcon = document.getElementById('mute-icon');
+            
+            muteBtn.addEventListener('click', () => {
+                if (player.isMuted()) {
+                    player.unMute();
+                    muteIcon.classList.replace('fa-volume-xmark', 'fa-volume-high');
+                } else {
+                    player.mute();
+                    muteIcon.classList.replace('fa-volume-high', 'fa-volume-xmark');
+                }
+            });
+        }
+
+        // Load YouTube API
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
         // Remove Loader
         window.addEventListener('load', () => {
             const loader = document.getElementById('loader');
@@ -292,12 +368,14 @@
             }, 1000);
         });
 
+        // Custom Cursor Movement
         const cursor = document.getElementById('cursor');
         document.addEventListener('mousemove', e => { 
             cursor.style.left = e.clientX + 'px'; 
             cursor.style.top = e.clientY + 'px'; 
         });
 
+        // Dynamic Text Cycler
         const phrases = ["Premiere Pro Expert", "YouTube Storyteller", "AI Video Master", "Cinematic Motion"];
         let count = 0; 
         const textElement = document.getElementById('changing-text');
@@ -311,6 +389,7 @@
             }, 500); 
         }, 3000);
 
+        // Cursor Scaling on Interactables
         document.querySelectorAll('a, button, .glass-card').forEach(link => { 
             link.addEventListener('mouseenter', () => { 
                 cursor.style.transform = 'scale(4)'; 
@@ -322,6 +401,7 @@
             }); 
         });
 
+        // Smooth Scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => { 
             anchor.addEventListener('click', function (e) { 
                 e.preventDefault(); 
@@ -329,6 +409,7 @@
             }); 
         });
 
+        // Production Vault Video Hover Play
         document.querySelectorAll('.group').forEach(group => {
             const video = group.querySelector('.vault-video');
             if (video) {
